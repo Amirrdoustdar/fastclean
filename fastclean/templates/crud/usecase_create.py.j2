@@ -1,0 +1,11 @@
+"""Create {{ entity_name }} Use Case"""
+from ....domain.entities.{{ entity_name_snake }} import {{ entity_name }}
+from ....domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name }}Repository
+
+class Create{{ entity_name }}UseCase:
+    def __init__(self, repository: I{{ entity_name }}Repository):
+        self._repository = repository
+    
+    async def execute(self, {% for field in fields %}{{ field.name }}: {{ field.type }}, {% endfor %}) -> {{ entity_name }}:
+        entity = {{ entity_name }}({% for field in fields %}{{ field.name }}={{ field.name }}, {% endfor %})
+        return await self._repository.create(entity)

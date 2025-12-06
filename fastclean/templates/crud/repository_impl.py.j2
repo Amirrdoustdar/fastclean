@@ -1,0 +1,56 @@
+"""{{ entity_name }} Repository Implementation"""
+from typing import Optional, List
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from ....domain.entities.{{ entity_name_snake }} import {{ entity_name }}
+from ....domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name }}Repository
+from ..models.{{ entity_name_snake }}_model import {{ entity_name }}Model
+
+class {{ entity_name }}Repository(I{{ entity_name }}Repository):
+    def __init__(self, session: AsyncSession):
+        self._session = session
+    
+    def _to_entity(self, model: {{ entity_name }}Model) -> {{ entity_name }}:
+        return {{ entity_name }}(
+            id=model.id,
+            {% for field in fields %}{{ field.name }}=model.{{ field.name }},
+            {% endfor %}created_at=model.created_at
+        )
+    
+    async def create(self, entity: {{ entity_name }}) -> {{ entity_name }}:
+        model = {{ entity_name }}Model(
+            {% for field in fields %}{{ field.name }}=entity.{{ field.name }},
+            {% endfor %})
+        self._session.add(model)
+        await self._session.flush()
+        await self._session.refresh(model)
+        return self._to_entity(model)
+    
+    async def get_by_id(self, id: int) -> Optional[{{ entity_name }}]:
+        result = await self._session.execute(
+            select({{ entity_name }}Model).where({{ entity_name }}Model.id == id)
+        )
+        model = result.scalar_one_or_none()
+        return self._to_entity(model) if model else None
+    
+    async def get_all(self, skip: int = 0, limit: int = 100) -> List[{{ entity_name }}]:
+        result = await self._session.execute(
+            select({{ entity_name }}Model).offset(skip).limit(limit)
+        )
+        return [self._to_entity(m) for m in result.scalars().all()]
+    
+    async def update(self, entity: {{ entity_name }}) -> {{ entity_name }}:
+        model = await self._session.get({{ entity_name }}Model, entity.id)
+        if model:
+            {% for field in fields %}model.{{ field.name }} = entity.{{ field.name }}
+            {% endfor %}await self._session.flush()
+            await self._session.refresh(model)
+            return self._to_entity(model)
+        raise ValueError("Not found")
+    
+    async def delete(self, id: int) -> bool:
+        model = await self._session.get({{ entity_name }}Model, id)
+        if model:
+            await self._session.delete(model)
+            return True
+        return False

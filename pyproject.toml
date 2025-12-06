@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi-clean-cli"
+version = "1.0.0"
+description = "CLI tool for FastAPI Clean Architecture"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["fastapi", "clean-architecture", "cli", "scaffolding"]
+
+dependencies = [
+    "jinja2>=3.1.2",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "black>=23.12.0",
+    "isort>=5.13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/fastapi-clean-cli"
+Repository = "https://github.com/yourusername/fastapi-clean-cli"
+
+[project.scripts]
+fastapi-clean = "cli_main:main"
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

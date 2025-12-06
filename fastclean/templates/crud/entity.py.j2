@@ -1,0 +1,17 @@
+"""{{ entity_name }} Entity"""
+from datetime import datetime
+from typing import Optional
+
+class {{ entity_name }}:
+    def __init__(
+        self,
+        {% for field in fields %}{{ field.name }}: {{ field.type }},
+        {% endfor %}id: Optional[int] = None,
+        created_at: Optional[datetime] = None
+    ):
+        self.id = id
+        {% for field in fields %}self.{{ field.name }} = {{ field.name }}
+        {% endfor %}self.created_at = created_at or datetime.now()
+    
+    def __repr__(self):
+        return f"<{{ entity_name }} {self.id}>"
