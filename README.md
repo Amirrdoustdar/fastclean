@@ -1,4 +1,4 @@
-# 🚀 FastClean
+# 🚀 FastAPIClean
 
 **The Ultimate CLI tool for scaffolding FastAPI projects with Clean Architecture principles.**
 
@@ -257,10 +257,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-```markdown
-Inspired by [HiDjango](https://github.com/parsarezaee/HiDjango)
-Based on Clean Architecture by [Robert C. Martin](https://en.wikipedia.org/wiki/Robert_C._Martin)
-```
+
+Inspired by [HiDjango](#-https://github.com/parsarezaee/HiDjango)
+
+Based on Clean Architecture by [Robert C. Martin](#-https://en.wikipedia.org/wiki/Robert_C._Martin)
+
 
 ---
 
