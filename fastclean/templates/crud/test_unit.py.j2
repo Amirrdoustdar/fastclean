@@ -1,0 +1,61 @@
+import pytest
+from unittest.mock import Mock, MagicMock
+from src.domain.entities.{{ entity_name_snake }} import {{ entity_name }}
+from src.application.usecases.{{ entity_name_snake }}.create_{{ entity_name_snake }} import Create{{ entity_name }}UseCase
+from src.application.usecases.{{ entity_name_snake }}.get_{{ entity_name_snake }} import Get{{ entity_name }}UseCase
+
+
+class TestCreate{{ entity_name }}UseCase:
+    def setup_method(self):
+        self.repository = Mock()
+        self.usecase = Create{{ entity_name }}UseCase(self.repository)
+
+    def test_create_{{ entity_name_snake }}_success(self):
+        # Arrange
+        self.repository.create.return_value = {{ entity_name }}(
+            id=1,
+            {% for field in fields %}
+            {{ field.name }}={{ field.type }}(),
+            {% endfor %}
+        )
+
+        # Act
+        result = self.usecase.execute({
+            {% for field in fields %}
+            "{{ field.name }}": {{ field.type }}(),
+            {% endfor %}
+        })
+
+        # Assert
+        assert result is not None
+        self.repository.create.assert_called_once()
+
+
+class TestGet{{ entity_name }}UseCase:
+    def setup_method(self):
+        self.repository = Mock()
+        self.usecase = Get{{ entity_name }}UseCase(self.repository)
+
+    def test_get_{{ entity_name_snake }}_success(self):
+        # Arrange
+        self.repository.get_by_id.return_value = {{ entity_name }}(
+            id=1,
+            {% for field in fields %}
+            {{ field.name }}={{ field.type }}(),
+            {% endfor %}
+        )
+
+        # Act
+        result = self.usecase.execute(1)
+
+        # Assert
+        assert result is not None
+        self.repository.get_by_id.assert_called_once_with(1)
+
+    def test_get_{{ entity_name_snake }}_not_found(self):
+        # Arrange
+        self.repository.get_by_id.return_value = None
+
+        # Act & Assert
+        with pytest.raises(Exception):
+            self.usecase.execute(999)

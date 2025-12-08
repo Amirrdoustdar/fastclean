@@ -1,0 +1,13 @@
+from fastclean.core.use_case import BaseUseCase
+from fastclean.core.exceptions.base import EntityNotFoundException
+from ...domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name|pascal_case }}Repository
+
+class Delete{{ entity_name|pascal_case }}UseCase(BaseUseCase[int, bool]):
+    def __init__(self, repository: I{{ entity_name|pascal_case }}Repository):
+        self._repository = repository
+
+    def execute(self, id: int) -> bool:
+        if not self._repository.get_by_id(id):
+            raise EntityNotFoundException(f"{{ entity_name|pascal_case }} with id {id} not found")
+        
+        return self._repository.delete(id)

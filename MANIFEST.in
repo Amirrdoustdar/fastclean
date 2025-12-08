@@ -1,7 +1,0 @@
-include README.md
-include LICENSE
-include requirements.txt
-recursive-include templates *.j2 *.yml *.yaml *.txt
-recursive-include src *.py
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]

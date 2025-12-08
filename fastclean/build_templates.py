@@ -161,7 +161,7 @@ class I{{ entity_name }}Repository(ABC):
         pass
     
     @abstractmethod
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[{{ entity_name }}]:
+    async def get_all(self, skip: int = 0, limit: int = 100) -> list[{{ entity_name }}]:
         pass
     
     @abstractmethod
@@ -224,7 +224,7 @@ class {{ entity_name }}Repository(I{{ entity_name }}Repository):
         model = result.scalar_one_or_none()
         return self._to_entity(model) if model else None
     
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[{{ entity_name }}]:
+    async def get_all(self, skip: int = 0, limit: int = 100) -> list[{{ entity_name }}]:
         result = await self._session.execute(
             select({{ entity_name }}Model).offset(skip).limit(limit)
         )
@@ -277,7 +277,7 @@ async def get(id: int):
     # TODO: Implement with use case
     pass
 
-@router.get("/", response_model=List[{{ entity_name }}Response])
+@router.get("/", response_model=list[{{ entity_name }}Response])
 async def list_all(skip: int = 0, limit: int = 100):
     # TODO: Implement with use case
     pass

@@ -131,7 +131,7 @@ class IUserRepository(ABC):
     async def get_by_id(self, user_id: int) -> Optional[User]: pass
     
     @abstractmethod
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[User]: pass
+    async def get_all(self, skip: int = 0, limit: int = 100) -> list[User]: pass
 EOF
 
 # Create User Use Case
@@ -239,7 +239,7 @@ class UserRepository(IUserRepository):
         model = result.scalar_one_or_none()
         return self._to_entity(model) if model else None
     
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[User]:
+    async def get_all(self, skip: int = 0, limit: int = 100) -> list[User]:
         result = await self._session.execute(select(UserModel).offset(skip).limit(limit))
         return [self._to_entity(m) for m in result.scalars().all()]
 EOF
@@ -270,8 +270,8 @@ cat > src/interfaces/api/dependencies.py << 'EOF'
 """Dependencies"""
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from ...infrastructure.database.database import get_db
-from ...infrastructure.database.repositories.user_repository import UserRepository
+from fastclean.infrastructure.database.database import get_db
+from fastclean.infrastructure.database.repositories.user_repository import UserRepository
 from ...application.usecases.user.create_user import CreateUserUseCase
 
 def get_user_repository(session: AsyncSession = Depends(get_db)):
@@ -301,7 +301,7 @@ async def create_user(data: UserCreate, usecase: CreateUserUseCase = Depends(get
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/", response_model=List[UserResponse])
+@router.get("/", response_model=list[UserResponse])
 async def list_users():
     return []
 EOF
