@@ -13,7 +13,7 @@
 
 - [Introduction](#-introduction)
 - [Features](#-features)
-- [Architecture](#-architecture)
+- [Architecture](#-Architecture)
 - [Installation](#-installation)
 - [Quick Start](#-quick-start)
 - [Commands](#-commands)
@@ -53,10 +53,11 @@ Forget about setting up project structures, configuring Docker, or writing boile
 
 ---
 
-## 🏛️ Architecture
+## 🏛️ 
 
 FastClean follows the Dependency Rule: source code dependencies can only point inwards.
 
+```
 ┌───────────────────────────────────────────────┐
 │ Presentation (API Routes, CLI, Schemas)       │ ← Outer Layer
 ├───────────────────────────────────────────────┤
@@ -66,7 +67,7 @@ FastClean follows the Dependency Rule: source code dependencies can only point i
 ├───────────────────────────────────────────────┤
 │ Domain (Entities, Value Objects)              │ ← Enterprise Business Rules
 └───────────────────────────────────────────────┘
-
+```
 ---
 
 ## 📦 Installation
