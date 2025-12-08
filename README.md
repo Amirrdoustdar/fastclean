@@ -257,7 +257,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-Inspired by HiDjango (https://github.com/parsarezaee/HiDjango)  
+Inspired by HiDjango(https://github.com/parsarezaee/HiDjango)
 Based on Clean Architecture by Robert C. Martin
 
 ---
