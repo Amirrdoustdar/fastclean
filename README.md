@@ -97,27 +97,25 @@ FastAPI Clean CLI follows the **Dependency Rule**: source code dependencies can 
 
 ## 📦 Installation
 
-### **From PyPI (Recommended)**
-
+### 🎯 Quick Install (Recommended)
 ```bash
 pip install fastapi-clean-cli
 ```
 
-### **From Source**
-
-```bash
-git clone https://github.com/Amirrdoustdar/fastclean.git
-cd fastclean
-pip install -e .
-```
-
-### **Verify Installation**
-
+### ✅ Verify Installation
 ```bash
 fastapi-clean --version
 fastapi-clean --help
 ```
 
+### 🔧 From Source (For Development)
+```bash
+git clone https://github.com/Amirrdoustdar/fastclean.git
+cd fastclean
+python -m venv venv
+source venv/bin/activate
+pip install -e ".[dev]"
+```
 ---
 
 ## 🚀 Quick Start
