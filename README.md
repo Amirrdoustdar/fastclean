@@ -3,6 +3,7 @@
 **The Ultimate CLI tool for scaffolding FastAPI projects with Clean Architecture principles.**
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/downloads/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fastapi-clean-cli)](https://pypi.org/project/fastapi-clean-cli/)
 [![PyPI version](https://badge.fury.io/py/fastapi-clean-cli.svg)](https://pypi.org/project/fastapi-clean-cli/)
 [![Downloads](https://pepy.tech/badge/fastapi-clean-cli)](https://pepy.tech/project/fastapi-clean-cli)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
