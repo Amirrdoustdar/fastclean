@@ -1,0 +1,1 @@
+recursive-include fastclean/templates *.j2 *.txt *.md

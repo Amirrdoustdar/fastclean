@@ -1,14 +1,40 @@
 [build-system]
-requires = ["setuptools>=65.0", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
+<<<<<<< HEAD
 name = "fastclean"
 version = "1.0.0"
 description = "FastAPI Clean Architecture scaffolding CLI"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10,<3.12"
+=======
+name = "fastapi-clean-cli"
+version = "1.0.1"
+description = "The Ultimate CLI tool for scaffolding FastAPI projects with Clean Architecture"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Amir Doustdar", email = "amirrdoustdar1@gmail.com"}
+]
+keywords = ["fastapi", "clean-architecture", "cli", "generator", "scaffolding"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Code Generators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+]
+
+>>>>>>> c7394bf (fix: Remove fastclean/setup.py from repository)
 dependencies = [
   "jinja2>=3.1.2",
   "rich>=13.7.0",
@@ -17,6 +43,7 @@ dependencies = [
 ]
 
 [project.scripts]
+<<<<<<< HEAD
 fastclean = "fastclean.cli.main:main"
 
 [tool.setuptools]
@@ -41,3 +68,17 @@ strict = true
 testpaths = ["tests"]
 python_files = "test_*.py"
 addopts = "-v --cov=fastclean --cov-report=term-missing"
+=======
+fastclean = "fastclean.cli_main:main"  # دستور همچنان fastclean باقی می‌ماند
+
+[project.urls]
+"Homepage" = "https://github.com/Amirrdoustdar/fastclean"
+"Bug Tracker" = "https://github.com/Amirrdoustdar/fastclean/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fastclean*"]
+
+[tool.setuptools.package-data]
+fastclean = ["templates/**/*.j2", "templates/**/*.txt", "templates/**/*.md"]
+>>>>>>> c7394bf (fix: Remove fastclean/setup.py from repository)
