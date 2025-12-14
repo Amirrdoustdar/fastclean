@@ -31,7 +31,11 @@
 
 ## 📖 Introduction
 
-**FastAPI Clean CLI** is a powerful command-line interface designed to streamline the development of FastAPI applications. It enforces **Clean Architecture** (Uncle Bob's architecture) and SOLID principles, allowing you to focus on business logic rather than boilerplate code.
+FastAPI Clean CLI is a command-line tool that helps developers build FastAPI applications with a strict Clean Architecture structure.
+It enforces separation of concerns and SOLID principles, so developers can focus on business logic instead of repetitive setup code.
+
+The tool is designed for developers who want a long-term, maintainable project structure, not a simple prototype.
+
 
 ### 🎯 Why FastAPI Clean CLI?
 
