@@ -1,0 +1,74 @@
+name: 🚀 Release
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+      - alpha
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: 📦 Semantic Release
+    runs-on: ubuntu-latest
+
+    # if the commit message contains [skip ci], skip the release job
+    if: |
+      github.event_name == 'push' &&
+      !contains(github.event.head_commit.message, '[skip ci]')
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 📥 Install semantic-release
+        run: |
+          npm install -g semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/git \
+            @semantic-release/github \
+            @semantic-release/exec \
+            conventional-changelog-conventionalcommits
+
+      - name: 🔍 Verify conditions
+        run: |
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Last commit: ${{ github.event.head_commit.message }}"
+
+      - name: 🚀 Run Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      - name: 📦 Build package
+        if: success()
+        run: |
+          pip install build
+          python -m build
+
+      - name: 📤 Publish to PyPI
+        if: success() && github.ref == 'refs/heads/main'
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          pip install twine
+          twine upload dist/*
