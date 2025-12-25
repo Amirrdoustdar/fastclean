@@ -1,0 +1,22 @@
+"""{{ entity_name }} Schemas"""
+from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
+
+class {{ entity_name }}Base(BaseModel):
+    {% for field in fields %}{{ field.name }}: {{ field.type }}
+    {% endfor %}
+
+class {{ entity_name }}Create({{ entity_name }}Base):
+    pass
+
+class {{ entity_name }}Update(BaseModel):
+    {% for field in fields %}{{ field.name }}: Optional[{{ field.type }}] = None
+    {% endfor %}
+
+class {{ entity_name }}Response({{ entity_name }}Base):
+    id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True

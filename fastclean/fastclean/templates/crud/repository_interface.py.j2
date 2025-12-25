@@ -1,0 +1,25 @@
+"""{{ entity_name }} Repository Interface"""
+from abc import ABC, abstractmethod
+from typing import Optional, List
+from ..entities.{{ entity_name_snake }} import {{ entity_name }}
+
+class I{{ entity_name }}Repository(ABC):
+    @abstractmethod
+    async def create(self, entity: {{ entity_name }}) -> {{ entity_name }}:
+        pass
+    
+    @abstractmethod
+    async def get_by_id(self, id: int) -> Optional[{{ entity_name }}]:
+        pass
+    
+    @abstractmethod
+    async def get_all(self, skip: int = 0, limit: int = 100) -> List[{{ entity_name }}]:
+        pass
+    
+    @abstractmethod
+    async def update(self, entity: {{ entity_name }}) -> {{ entity_name }}:
+        pass
+    
+    @abstractmethod
+    async def delete(self, id: int) -> bool:
+        pass

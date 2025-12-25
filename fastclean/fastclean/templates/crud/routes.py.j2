@@ -1,0 +1,21 @@
+"""{{ entity_name }} API Routes"""
+from fastapi import APIRouter, Depends, HTTPException
+from typing import List
+from ....schemas.{{ entity_name_snake }} import {{ entity_name }}Create, {{ entity_name }}Response
+
+router = APIRouter(prefix="/{{ entity_name_snake }}s", tags=["{{ entity_name_snake }}s"])
+
+@router.post("/", response_model={{ entity_name }}Response, status_code=201)
+async def create(data: {{ entity_name }}Create):
+    # TODO: Implement with use case
+    pass
+
+@router.get("/{id}", response_model={{ entity_name }}Response)
+async def get(id: int):
+    # TODO: Implement with use case
+    pass
+
+@router.get("/", response_model=List[{{ entity_name }}Response])
+async def list_all(skip: int = 0, limit: int = 100):
+    # TODO: Implement with use case
+    pass

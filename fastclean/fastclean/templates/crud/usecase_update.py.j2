@@ -1,0 +1,29 @@
+from typing import Optional
+from pydantic import BaseModel
+from fastclean.core.use_case import BaseUseCase
+from fastclean.core.exceptions.base import EntityNotFoundException
+from ...domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name|pascal_case }}Repository
+from ...domain.entities.{{ entity_name_snake }} import {{ entity_name|pascal_case }}
+
+class Update{{ entity_name|pascal_case }}Request(BaseModel):
+    id: int
+    {% for field in fields %}
+    {{ field.name }}: Optional[{{ field.type }}] = None
+    {% endfor %}
+
+class Update{{ entity_name|pascal_case }}UseCase(BaseUseCase[Update{{ entity_name|pascal_case }}Request, {{ entity_name|pascal_case }}]):
+    def __init__(self, repository: I{{ entity_name|pascal_case }}Repository):
+        self._repository = repository
+
+    def execute(self, request: Update{{ entity_name|pascal_case }}Request) -> {{ entity_name|pascal_case }}:
+        entity = self._repository.get_by_id(request.id)
+        if not entity:
+            raise EntityNotFoundException(f"{{ entity_name|pascal_case }} with id {request.id} not found")
+        
+        # Update fields
+        {% for field in fields %}
+        if request.{{ field.name }} is not None:
+            entity.{{ field.name }} = request.{{ field.name }}
+        {% endfor %}
+        
+        return self._repository.update(entity)

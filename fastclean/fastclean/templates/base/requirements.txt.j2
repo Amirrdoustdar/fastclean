@@ -1,0 +1,42 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database
+{% if database_type == 'postgresql' %}
+sqlalchemy[asyncio]==2.0.23
+asyncpg==0.29.0
+{% elif database_type == 'mongodb' %}
+motor==3.3.1
+{% endif %}
+
+# Auth
+{% if auth_type == 'jwt' %}
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+{% endif %}
+
+# Cache
+{% if cache_type == 'redis' %}
+redis==5.0.1
+{% endif %}
+
+# Queue
+{% if queue == 'celery' %}
+celery==5.3.6
+{% endif %}
+
+# Storage
+{% if storage == 's3' or storage == 'minio' %}
+boto3==1.29.6
+{% endif %}
+
+# Monitoring
+{% if monitoring == 'prometheus' %}
+prometheus-client==0.19.0
+{% endif %}
+
+# Testing
+pytest==7.4.3
+httpx==0.25.2

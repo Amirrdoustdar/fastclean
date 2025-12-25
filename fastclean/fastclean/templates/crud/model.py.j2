@@ -1,0 +1,14 @@
+"""{{ entity_name }} Database Model"""
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime
+from datetime import datetime
+from ..database import Base
+
+class {{ entity_name }}Model(Base):
+    __tablename__ = "{{ entity_name_snake }}s"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    {% for field in fields %}{% if field.type == 'str' %}{{ field.name }} = Column(String)
+    {% elif field.type == 'int' %}{{ field.name }} = Column(Integer)
+    {% elif field.type == 'float' %}{{ field.name }} = Column(Float)
+    {% elif field.type == 'bool' %}{{ field.name }} = Column(Boolean, default=True)
+    {% endif %}{% endfor %}created_at = Column(DateTime, default=datetime.now)

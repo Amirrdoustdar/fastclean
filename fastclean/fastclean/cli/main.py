@@ -1,11 +1,9 @@
-#!/usr/bin/env python3
 """
 FastAPI Clean Architecture CLI - Main Entry Point
 """
 
 import argparse
 import sys
-from pathlib import Path
 
 from fastclean.application.use_cases.create_project.create_project import \
     CreateProjectUseCase
@@ -13,6 +11,7 @@ from fastclean.application.use_cases.generate_crud.generate_crud import \
     GenerateCRUDUseCase
 from fastclean.infrastructure.file_system.local_file_system import \
     LocalFileSystemService
+from fastclean.infrastructure.file_system.path_resolver import PathResolver
 from fastclean.infrastructure.templates.jinja_engine import JinjaTemplateEngine
 from fastclean.infrastructure.validators.project_validator import \
     ProjectValidator
@@ -27,7 +26,7 @@ class DependencyContainer:
 
     def __init__(self):
         self.file_system = LocalFileSystemService()
-        templates_dir = Path(__file__).parent / "templates"
+        templates_dir = PathResolver.get_templates_dir()
         self.template_engine = JinjaTemplateEngine(templates_dir)
         self.validator = ProjectValidator()
 
@@ -69,16 +68,12 @@ Examples:
     init_parser = subparsers.add_parser("init", help="Initialize new project")
     init_parser.add_argument("--name", required=True, help="Project name")
     init_parser.add_argument("--path", default=".", help="Project path")
-
-    # Database
     init_parser.add_argument(
         "--db",
         default="postgresql",
         choices=["postgresql", "mysql", "sqlite", "mongodb"],
         help="Database type",
     )
-
-    # Auth & Cache
     init_parser.add_argument(
         "--auth",
         default="none",
@@ -91,8 +86,6 @@ Examples:
         choices=["none", "redis", "memcached"],
         help="Cache type",
     )
-
-    # New Features 🚀
     init_parser.add_argument(
         "--queue",
         default="none",
@@ -117,7 +110,6 @@ Examples:
         choices=["none", "github-actions", "gitlab-ci"],
         help="CI/CD pipeline",
     )
-
     init_parser.add_argument(
         "--docker", action="store_true", help="Include Docker files"
     )
@@ -154,6 +146,8 @@ Examples:
         return 130
     except Exception as e:
         print(f"❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
         return 1
 
 

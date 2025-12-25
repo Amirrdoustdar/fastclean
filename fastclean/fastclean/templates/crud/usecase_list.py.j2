@@ -1,0 +1,11 @@
+from typing import List
+from fastclean.core.use_case import BaseUseCase
+from ...domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name|pascal_case }}Repository
+from ...domain.entities.{{ entity_name_snake }} import {{ entity_name|pascal_case }}
+
+class List{{ entity_name|pascal_case }}UseCase(BaseUseCase[None, List[{{ entity_name|pascal_case }}]]):
+    def __init__(self, repository: I{{ entity_name|pascal_case }}Repository):
+        self._repository = repository
+
+    def execute(self, _=None) -> List[{{ entity_name|pascal_case }}]:
+        return self._repository.get_all()
