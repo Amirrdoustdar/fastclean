@@ -1,28 +1,15 @@
-# ═══════════════════════════════════════════════════════════════
-# 📦 BUILD SYSTEM
-# ═══════════════════════════════════════════════════════════════
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-# ═══════════════════════════════════════════════════════════════
-# 📋 PROJECT METADATA
-# ═══════════════════════════════════════════════════════════════
 [project]
 name = "fastclean"
-version = "0.0.0"
+version = "0.1.1"
 description = "FastAPI Clean Architecture scaffolding CLI"
 readme = "README.md"
-license = "MIT"
+license = {text = "MIT"}
 requires-python = ">=3.10"
-keywords = [
-    "fastapi",
-    "clean-architecture",
-    "cli",
-    "scaffolding",
-    "template",
-    "hexagonal",
-]
+keywords = ["fastapi", "clean-architecture", "cli"]
 authors = [
     { name = "Amir Doustdar", email = "amir@example.com" }
 ]
@@ -60,7 +47,6 @@ dev = [
     "ruff>=0.1.9",
     "pre-commit>=3.6.0",
 ]
-
 test = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
@@ -73,11 +59,6 @@ fastclean = "fastclean.cli.main:main"
 [project.urls]
 Homepage = "https://github.com/Amirrdoustdar/fastclean"
 Repository = "https://github.com/Amirrdoustdar/fastclean.git"
-Issues = "https://github.com/Amirrdoustdar/fastclean/issues"
-
-# ═══════════════════════════════════════════════════════════════
-# 🔧 TOOL CONFIGURATIONS
-# ═══════════════════════════════════════════════════════════════
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -86,66 +67,24 @@ include = ["fastclean*"]
 [tool.setuptools.package-data]
 fastclean = ["templates/**/*", "py.typed"]
 
-# ───────────────────────────────────────────────────────────────
-# Ruff
-# ───────────────────────────────────────────────────────────────
 [tool.ruff]
 target-version = "py310"
 line-length = 88
 src = ["fastclean", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "W", "F", "I", "N", "UP", "B", "C4", "PT", "SIM", "RUF"]
-ignore = ["E501", "PLR0913", "PLR2004"]
+select = ["E", "W", "F", "I", "N", "UP", "B"]
+ignore = ["E501"]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*" = ["PLR2004", "S101", "ARG"]
-
-[tool.ruff.lint.isort]
-known-first-party = ["fastclean"]
-
-# ───────────────────────────────────────────────────────────────
-# MyPy
-# ───────────────────────────────────────────────────────────────
-[tool.mypy]
-python_version = "3.10"
-strict = true
-warn_return_any = true
-show_error_codes = true
-
-[[tool.mypy.overrides]]
-module = ["rich.*", "typer.*"]
-ignore_missing_imports = true
-
-# ───────────────────────────────────────────────────────────────
-# Pytest
-# ───────────────────────────────────────────────────────────────
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
-python_classes = "Test*"
-python_functions = "test_*"
 asyncio_mode = "auto"
-addopts = ["-v", "-ra", "--strict-markers"]
-markers = [
-    "slow: marks tests as slow",
-    "integration: marks tests as integration tests",
-]
+addopts = ["-v", "--strict-markers"]
 
-# ───────────────────────────────────────────────────────────────
-# Coverage
-# ───────────────────────────────────────────────────────────────
 [tool.coverage.run]
 source = ["fastclean"]
-branch = true
-omit = ["tests/*", "*/__pycache__/*", "*/__init__.py"]
+omit = ["tests/*"]
 
 [tool.coverage.report]
 fail_under = 0
-show_missing = true
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "raise NotImplementedError",
-    "if TYPE_CHECKING:",
-]
