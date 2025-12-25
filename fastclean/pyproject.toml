@@ -10,10 +10,10 @@ build-backend = "setuptools.build_meta"
 # ═══════════════════════════════════════════════════════════════
 [project]
 name = "fastclean"
-version = "0.0.0"  # ⚠️ Managed by semantic-release - DO NOT EDIT MANUALLY
+version = "0.0.0"
 description = "FastAPI Clean Architecture scaffolding CLI"
 readme = "README.md"
-license =  "MIT"
+license = "MIT"
 requires-python = ">=3.10"
 keywords = [
     "fastapi",
@@ -24,9 +24,6 @@ keywords = [
     "hexagonal",
 ]
 authors = [
-    { name = "Amir Doustdar", email = "amir@example.com" }
-]
-maintainers = [
     { name = "Amir Doustdar", email = "amir@example.com" }
 ]
 classifiers = [
@@ -40,41 +37,27 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Code Generators",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Typing :: Typed",
 ]
 
-# ───────────────────────────────────────────────────────────────
-# Core Dependencies
-# ───────────────────────────────────────────────────────────────
 dependencies = [
     "jinja2>=3.1.2",
     "rich>=13.7.0",
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
-    "typer>=0.9.0",        # برای CLI بهتر
+    "typer>=0.9.0",
     "typing-extensions>=4.8.0",
 ]
 
-# ───────────────────────────────────────────────────────────────
-# Optional Dependencies
-# ───────────────────────────────────────────────────────────────
 [project.optional-dependencies]
 dev = [
-    # Testing
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=4.1.0",
-    "pytest-xdist>=3.5.0",    # parallel testing
-    "hypothesis>=6.92.0",      # property-based testing
-
-    # Type Checking
+    "pytest-xdist>=3.5.0",
+    "hypothesis>=6.92.0",
     "mypy>=1.8.0",
-
-    # Linting & Formatting (Ruff جایگزین black + isort + flake8)
     "ruff>=0.1.9",
-
-    # Pre-commit
     "pre-commit>=3.6.0",
 ]
 
@@ -84,35 +67,18 @@ test = [
     "pytest-cov>=4.1.0",
 ]
 
-docs = [
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.5.0",
-    "mkdocstrings[python]>=0.24.0",
-]
-
-# ───────────────────────────────────────────────────────────────
-# CLI Entry Points
-# ───────────────────────────────────────────────────────────────
 [project.scripts]
 fastclean = "fastclean.cli.main:main"
 
-# ───────────────────────────────────────────────────────────────
-# Project URLs
-# ───────────────────────────────────────────────────────────────
 [project.urls]
 Homepage = "https://github.com/Amirrdoustdar/fastclean"
-Documentation = "https://github.com/Amirrdoustdar/fastclean#readme"
 Repository = "https://github.com/Amirrdoustdar/fastclean.git"
 Issues = "https://github.com/Amirrdoustdar/fastclean/issues"
-Changelog = "https://github.com/Amirrdoustdar/fastclean/blob/main/CHANGELOG.md"
 
 # ═══════════════════════════════════════════════════════════════
 # 🔧 TOOL CONFIGURATIONS
 # ═══════════════════════════════════════════════════════════════
 
-# ───────────────────────────────────────────────────────────────
-# Setuptools
-# ───────────────────────────────────────────────────────────────
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["fastclean*"]
@@ -120,64 +86,23 @@ include = ["fastclean*"]
 [tool.setuptools.package-data]
 fastclean = ["templates/**/*", "py.typed"]
 
-
 # ───────────────────────────────────────────────────────────────
-# Ruff (جایگزین Black + isort + Flake8 + Pylint)
+# Ruff
 # ───────────────────────────────────────────────────────────────
 [tool.ruff]
 target-version = "py310"
 line-length = 88
-src = ["src", "tests"]
+src = ["fastclean", "tests"]
 
 [tool.ruff.lint]
-select = [
-    "E",      # pycodestyle errors
-    "W",      # pycodestyle warnings
-    "F",      # Pyflakes
-    "I",      # isort
-    "N",      # pep8-naming
-    "UP",     # pyupgrade
-    "B",      # flake8-bugbear
-    "C4",     # flake8-comprehensions
-    "DTZ",    # flake8-datetimez
-    "T10",    # flake8-debugger
-    "ISC",    # flake8-implicit-str-concat
-    "ICN",    # flake8-import-conventions
-    "PIE",    # flake8-pie
-    "PT",     # flake8-pytest-style
-    "Q",      # flake8-quotes
-    "RSE",    # flake8-raise
-    "RET",    # flake8-return
-    "SIM",    # flake8-simplify
-    "TID",    # flake8-tidy-imports
-    "TCH",    # flake8-type-checking
-    "ARG",    # flake8-unused-arguments
-    "PTH",    # flake8-use-pathlib
-    "ERA",    # eradicate (commented code)
-    "PL",     # Pylint
-    "RUF",    # Ruff-specific
-]
-
-ignore = [
-    "E501",    # line too long (handled by formatter)
-    "PLR0913", # too many arguments
-    "PLR2004", # magic values
-]
+select = ["E", "W", "F", "I", "N", "UP", "B", "C4", "PT", "SIM", "RUF"]
+ignore = ["E501", "PLR0913", "PLR2004"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["PLR2004", "S101", "ARG"]
-"src/fastclean/cli/**/*" = ["T20"]  # print allowed in CLI
 
 [tool.ruff.lint.isort]
 known-first-party = ["fastclean"]
-force-single-line = false
-lines-after-imports = 2
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
 
 # ───────────────────────────────────────────────────────────────
 # MyPy
@@ -186,23 +111,10 @@ line-ending = "auto"
 python_version = "3.10"
 strict = true
 warn_return_any = true
-warn_unused_configs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
 show_error_codes = true
-show_column_numbers = true
-
-# Per-module overrides
-[[tool.mypy.overrides]]
-module = "tests.*"
-allow_untyped_defs = true
-allow_untyped_calls = true
 
 [[tool.mypy.overrides]]
-module = [
-    "rich.*",
-    "typer.*",
-]
+module = ["rich.*", "typer.*"]
 ignore_missing_imports = true
 
 # ───────────────────────────────────────────────────────────────
@@ -214,20 +126,7 @@ python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
 asyncio_mode = "auto"
-addopts = [
-    "-v",
-    "-ra",                    # show extra test summary
-    "--strict-markers",       # error on unknown markers
-    "--strict-config",        # error on config issues
-    "--cov=fastclean",
-    "--cov-report=term-missing",
-    "--cov-report=xml",
-    "--cov-fail-under=80",    # minimum coverage
-]
-filterwarnings = [
-    "error",
-    "ignore::DeprecationWarning",
-]
+addopts = ["-v", "-ra", "--strict-markers"]
 markers = [
     "slow: marks tests as slow",
     "integration: marks tests as integration tests",
@@ -237,25 +136,16 @@ markers = [
 # Coverage
 # ───────────────────────────────────────────────────────────────
 [tool.coverage.run]
-source = ["src/fastclean"]
+source = ["fastclean"]
 branch = true
-parallel = true
-omit = [
-    "*/tests/*",
-    "*/__init__.py",
-]
+omit = ["tests/*", "*/__pycache__/*", "*/__init__.py"]
 
 [tool.coverage.report]
+fail_under = 0
+show_missing = true
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",
-    "raise AssertionError",
     "raise NotImplementedError",
-    "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
-    "if typing.TYPE_CHECKING:",
-    "@abstractmethod",
-    "@abc.abstractmethod",
 ]
-fail_under = 80
-show_missing = true

@@ -1,32 +1,39 @@
 import pytest
 import asyncio
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-
-from src.infrastructure.database.database import Base
+from typing import Generator
+from pathlib import Path
 
 
 @pytest.fixture(scope="session")
-def event_loop():
-    """Event loop for async tests"""
+def event_loop() -> Generator:
+    """Event loop for async tests."""
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
 
 
 @pytest.fixture
-async def test_db():
-    """Test database session"""
-    engine = create_async_engine("sqlite+aiosqlite:///:memory:")
-    
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    
-    AsyncSessionLocal = sessionmaker(
-        engine, class_=AsyncSession, expire_on_commit=False
-    )
-    
-    async with AsyncSessionLocal() as session:
-        yield session
-    
-    await engine.dispose()
+def temp_project_path(tmp_path: Path) -> Path:
+    """Temporary path for project generation tests."""
+    return tmp_path / "test_project"
+
+
+@pytest.fixture
+def sample_project_config() -> dict:
+    """Sample project configuration for testing."""
+    return {
+        "name": "test_project",
+        "db": "postgresql",
+        "auth": "jwt",
+        "cache": "redis",
+        "docker": True,
+    }
+
+
+@pytest.fixture
+def sample_entity_config() -> dict:
+    """Sample entity configuration for testing."""
+    return {
+        "name": "Product",
+        "fields": "name:str,price:float,quantity:int",
+    }
