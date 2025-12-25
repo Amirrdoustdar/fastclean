@@ -3,8 +3,10 @@ from pathlib import Path
 from fastclean.application.interfaces.file_system import IFileSystemService
 from fastclean.application.interfaces.template_engine import ITemplateEngine
 from fastclean.core.exceptions.base import ValidationException
-from fastclean.core.exceptions.validation import (InvalidPathException,
-                                                  InvalidProjectNameException)
+from fastclean.core.exceptions.validation import (
+    InvalidPathException,
+    InvalidProjectNameException,
+)
 from fastclean.core.use_case import BaseUseCase
 
 from .dto import GenerateCRUDRequest, GenerateCRUDResponse

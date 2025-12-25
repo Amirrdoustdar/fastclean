@@ -1,6 +1,8 @@
-from fastclean.core.exceptions.base import (DuplicateEntityException,
-                                            EntityNotFoundException,
-                                            ValidationException)
+from fastclean.core.exceptions.base import (
+    DuplicateEntityException,
+    EntityNotFoundException,
+    ValidationException,
+)
 
 
 class InvalidProjectNameException(ValidationException):

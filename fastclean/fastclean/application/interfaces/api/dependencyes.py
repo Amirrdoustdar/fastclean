@@ -2,8 +2,9 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fastclean.infrastructure.database.database import get_db
-from fastclean.infrastructure.database.repositories.user_repository import \
-    UserRepository
+from fastclean.infrastructure.database.repositories.user_repository import (
+    UserRepository,
+)
 
 from ...application.use_cases.user.create_user import CreateUserUseCase
 from ..application.use_cases.user.get_user import GetUserUseCase

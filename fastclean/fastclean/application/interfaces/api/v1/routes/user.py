@@ -3,8 +3,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from .....application.usecases.user.create_user import CreateUserUseCase
 from .....application.usecases.user.get_user import GetUserUseCase
 from .....application.usecases.user.list_users import ListUsersUseCase
-from ....api.dependencies import (get_create_user_usecase,
-                                  get_get_user_usecase, get_list_users_usecase)
+from ....api.dependencies import (
+    get_create_user_usecase,
+    get_get_user_usecase,
+    get_list_users_usecase,
+)
 from ....schemas.user import UserCreate, UserResponse
 
 router = APIRouter(prefix="/users", tags=["users"])

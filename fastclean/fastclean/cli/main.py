@@ -5,20 +5,21 @@ FastAPI Clean Architecture CLI - Main Entry Point
 import argparse
 import sys
 
-from fastclean.application.use_cases.create_project.create_project import \
-    CreateProjectUseCase
-from fastclean.application.use_cases.generate_crud.generate_crud import \
-    GenerateCRUDUseCase
-from fastclean.infrastructure.file_system.local_file_system import \
-    LocalFileSystemService
+from fastclean.application.use_cases.create_project.create_project import (
+    CreateProjectUseCase,
+)
+from fastclean.application.use_cases.generate_crud.generate_crud import (
+    GenerateCRUDUseCase,
+)
+from fastclean.infrastructure.file_system.local_file_system import (
+    LocalFileSystemService,
+)
 from fastclean.infrastructure.file_system.path_resolver import PathResolver
 from fastclean.infrastructure.templates.jinja_engine import JinjaTemplateEngine
-from fastclean.infrastructure.validators.project_validator import \
-    ProjectValidator
+from fastclean.infrastructure.validators.project_validator import ProjectValidator
 from fastclean.presentation.cli.crud_command import CRUDCommand
 from fastclean.presentation.cli.init_command import InitCommand
-from fastclean.presentation.formatters.console_formatter import \
-    ConsoleFormatter
+from fastclean.presentation.formatters.console_formatter import ConsoleFormatter
 
 
 class DependencyContainer:
@@ -147,6 +148,7 @@ Examples:
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
 

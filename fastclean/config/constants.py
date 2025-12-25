@@ -20,7 +20,7 @@ REQUIRED_DIRECTORIES = [
     "src/application/usecases",
     "src/infrastructure/database",
     "src/interfaces/api/v1",
-    "tests"
+    "tests",
 ]
 
 # Feature flags

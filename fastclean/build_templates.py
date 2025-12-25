@@ -46,7 +46,6 @@ async def root():
 async def health_check():
     return {"status": "healthy"}
 ''',
-
     "base/settings.py.j2": '''"""Application Settings"""
 from pydantic_settings import BaseSettings
 
@@ -66,7 +65,6 @@ class Settings(BaseSettings):
 
 settings = Settings()
 ''',
-
     "base/database.py.j2": '''"""Database connection"""
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
@@ -88,17 +86,15 @@ async def get_db():
         finally:
             await session.close()
 ''',
-
-    "base/env.j2": '''# {{ project_name }} Environment Variables
+    "base/env.j2": """# {{ project_name }} Environment Variables
 APP_NAME={{ project_name }}
 DEBUG=True
 DATABASE_URL={{ database_url }}
 {% if auth_type == 'jwt' %}
 SECRET_KEY=your-secret-key-change-in-production
 {% endif %}
-''',
-
-    "base/gitignore.j2": '''__pycache__/
+""",
+    "base/gitignore.j2": """__pycache__/
 *.py[cod]
 venv/
 .env
@@ -107,9 +103,8 @@ venv/
 .coverage
 .idea/
 .vscode/
-''',
-
-    "base/readme.md.j2": '''# {{ project_name }}
+""",
+    "base/readme.md.j2": """# {{ project_name }}
 
 FastAPI project with Clean Architecture
 
@@ -124,8 +119,7 @@ uvicorn src.main:app --reload
 
 ## Documentation
 - Swagger: http://localhost:8000/docs
-''',
-
+""",
     # ==================== CRUD TEMPLATES ====================
     "crud/entity.py.j2": '''"""{{ entity_name }} Entity"""
 from datetime import datetime
@@ -145,7 +139,6 @@ class {{ entity_name }}:
     def __repr__(self):
         return f"<{{ entity_name }} {self.id}>"
 ''',
-
     "crud/repository_interface.py.j2": '''"""{{ entity_name }} Repository Interface"""
 from abc import ABC, abstractmethod
 from typing import Optional, List
@@ -172,7 +165,6 @@ class I{{ entity_name }}Repository(ABC):
     async def delete(self, id: int) -> bool:
         pass
 ''',
-
     "crud/model.py.j2": '''"""{{ entity_name }} Database Model"""
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime
 from datetime import datetime
@@ -188,7 +180,6 @@ class {{ entity_name }}Model(Base):
     {% elif field.type == 'bool' %}{{ field.name }} = Column(Boolean, default=True)
     {% endif %}{% endfor %}created_at = Column(DateTime, default=datetime.now)
 ''',
-
     "crud/repository_impl.py.j2": '''"""{{ entity_name }} Repository Implementation"""
 from typing import Optional, List
 from sqlalchemy import select
@@ -246,7 +237,6 @@ class {{ entity_name }}Repository(I{{ entity_name }}Repository):
             return True
         return False
 ''',
-
     "crud/usecase_create.py.j2": '''"""Create {{ entity_name }} Use Case"""
 from ....domain.entities.{{ entity_name_snake }} import {{ entity_name }}
 from ....domain.repositories.{{ entity_name_snake }}_repository import I{{ entity_name }}Repository
@@ -259,7 +249,6 @@ class Create{{ entity_name }}UseCase:
         entity = {{ entity_name }}({% for field in fields %}{{ field.name }}={{ field.name }}, {% endfor %})
         return await self._repository.create(entity)
 ''',
-
     "crud/routes.py.j2": '''"""{{ entity_name }} API Routes"""
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
@@ -282,7 +271,6 @@ async def list_all(skip: int = 0, limit: int = 100):
     # TODO: Implement with use case
     pass
 ''',
-
     "crud/schemas.py.j2": '''"""{{ entity_name }} Schemas"""
 from pydantic import BaseModel
 from datetime import datetime
@@ -306,9 +294,8 @@ class {{ entity_name }}Response({{ entity_name }}Base):
     class Config:
         from_attributes = True
 ''',
-
     # ==================== DOCKER TEMPLATES ====================
-    "docker/dockerfile.j2": '''FROM python:{{ python_version }}-slim
+    "docker/dockerfile.j2": """FROM python:{{ python_version }}-slim
 
 WORKDIR /app
 
@@ -320,9 +307,8 @@ COPY . .
 EXPOSE 8000
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
-''',
-
-    "docker/docker_compose.yml.j2": '''version: '3.8'
+""",
+    "docker/docker_compose.yml.j2": """version: '3.8'
 
 services:
   app:
@@ -352,8 +338,7 @@ services:
 volumes:
   postgres_data:
 {% endif %}
-''',
-
+""",
     # ==================== AUTH TEMPLATES ====================
     "auth/jwt_handler.py.j2": '''"""JWT Handler"""
 from datetime import datetime, timedelta
@@ -388,24 +373,24 @@ class JWTHandler:
 def create_templates(base_path: Path = Path("templates")):
     """Create all template files"""
     print(f"🚀 Creating templates in: {base_path}")
-    
+
     # Create base directory
     base_path.mkdir(exist_ok=True)
-    
+
     created_count = 0
-    
+
     for template_path, content in TEMPLATES.items():
         # Full path
         full_path = base_path / template_path
-        
+
         # Create parent directories
         full_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         # Write file
         full_path.write_text(content, encoding="utf-8")
         print(f"  ✅ Created: {template_path}")
         created_count += 1
-    
+
     print(f"\n✨ Successfully created {created_count} template files!")
     print(f"📁 Location: {base_path.absolute()}")
     print("\n📝 Directory structure:")
@@ -414,12 +399,12 @@ def create_templates(base_path: Path = Path("templates")):
 
 def print_tree(directory: Path, prefix: str = "", is_last: bool = True):
     """Print directory tree"""
-    if directory.name.startswith('.'):
+    if directory.name.startswith("."):
         return
-    
+
     connector = "└── " if is_last else "├── "
     print(f"{prefix}{connector}{directory.name}")
-    
+
     if directory.is_dir():
         children = sorted(directory.iterdir(), key=lambda x: (x.is_file(), x.name))
         for i, child in enumerate(children):
@@ -434,24 +419,26 @@ def main():
     print("  FastAPI Clean Architecture - Template Builder")
     print("=" * 60)
     print()
-    
+
     # Ask for path
     default_path = Path("templates")
-    user_input = input(f"Enter templates directory path (default: {default_path}): ").strip()
-    
+    user_input = input(
+        f"Enter templates directory path (default: {default_path}): "
+    ).strip()
+
     templates_path = Path(user_input) if user_input else default_path
-    
+
     # Confirm
     print(f"\n📍 Will create templates in: {templates_path.absolute()}")
     confirm = input("Continue? (y/n): ").strip().lower()
-    
-    if confirm != 'y':
+
+    if confirm != "y":
         print("❌ Cancelled")
         return
-    
+
     print()
     create_templates(templates_path)
-    
+
     print("\n" + "=" * 60)
     print("✨ Done! You can now use these templates with the CLI tool.")
     print("=" * 60)

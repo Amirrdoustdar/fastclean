@@ -1,11 +1,12 @@
 from pathlib import Path
 from typing import Any
 
-from ...application.use_cases.generate_crud.dto import (FieldDefinition,
-                                                        GenerateCRUDRequest,
-                                                        GenerateCRUDResponse)
-from ...application.use_cases.generate_crud.generate_crud import \
-    GenerateCRUDUseCase
+from ...application.use_cases.generate_crud.dto import (
+    FieldDefinition,
+    GenerateCRUDRequest,
+    GenerateCRUDResponse,
+)
+from ...application.use_cases.generate_crud.generate_crud import GenerateCRUDUseCase
 from ...core.exceptions.base import DomainException
 from ..formatters.progress_bar import ProgressBar
 from .base import BaseCommand
