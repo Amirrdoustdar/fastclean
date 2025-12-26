@@ -35,7 +35,9 @@ class BaseGenerator(ABC):
     def generate_files(self, output_path: Path, context: dict[str, Any]) -> list[Path]:
         """Generate files (must be implemented)"""
 
-    def post_process(self, output_path: Path, context: dict[str, Any]) -> None:  # noqa: B027
+    def post_process(
+        self, output_path: Path, context: dict[str, Any]
+    ) -> None:  # noqa: B027
         """Post-process after generation (can be overridden)"""
 
     def _render_template(
