@@ -6,7 +6,6 @@ Usage: python build_templates.py
 """
 
 from pathlib import Path
-from typing import Dict
 
 # Template content definitions
 TEMPLATES = {
@@ -59,7 +58,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     {% endif %}
-    
+
     class Config:
         env_file = ".env"
 
@@ -135,7 +134,7 @@ class {{ entity_name }}:
         self.id = id
         {% for field in fields %}self.{{ field.name }} = {{ field.name }}
         {% endfor %}self.created_at = created_at or datetime.now()
-    
+
     def __repr__(self):
         return f"<{{ entity_name }} {self.id}>"
 ''',
@@ -148,19 +147,19 @@ class I{{ entity_name }}Repository(ABC):
     @abstractmethod
     async def create(self, entity: {{ entity_name }}) -> {{ entity_name }}:
         pass
-    
+
     @abstractmethod
     async def get_by_id(self, id: int) -> Optional[{{ entity_name }}]:
         pass
-    
+
     @abstractmethod
     async def get_all(self, skip: int = 0, limit: int = 100) -> list[{{ entity_name }}]:
         pass
-    
+
     @abstractmethod
     async def update(self, entity: {{ entity_name }}) -> {{ entity_name }}:
         pass
-    
+
     @abstractmethod
     async def delete(self, id: int) -> bool:
         pass
@@ -172,7 +171,7 @@ from ..database import Base
 
 class {{ entity_name }}Model(Base):
     __tablename__ = "{{ entity_name_snake }}s"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     {% for field in fields %}{% if field.type == 'str' %}{{ field.name }} = Column(String)
     {% elif field.type == 'int' %}{{ field.name }} = Column(Integer)
@@ -191,14 +190,14 @@ from ..models.{{ entity_name_snake }}_model import {{ entity_name }}Model
 class {{ entity_name }}Repository(I{{ entity_name }}Repository):
     def __init__(self, session: AsyncSession):
         self._session = session
-    
+
     def _to_entity(self, model: {{ entity_name }}Model) -> {{ entity_name }}:
         return {{ entity_name }}(
             id=model.id,
             {% for field in fields %}{{ field.name }}=model.{{ field.name }},
             {% endfor %}created_at=model.created_at
         )
-    
+
     async def create(self, entity: {{ entity_name }}) -> {{ entity_name }}:
         model = {{ entity_name }}Model(
             {% for field in fields %}{{ field.name }}=entity.{{ field.name }},
@@ -207,20 +206,20 @@ class {{ entity_name }}Repository(I{{ entity_name }}Repository):
         await self._session.flush()
         await self._session.refresh(model)
         return self._to_entity(model)
-    
+
     async def get_by_id(self, id: int) -> Optional[{{ entity_name }}]:
         result = await self._session.execute(
             select({{ entity_name }}Model).where({{ entity_name }}Model.id == id)
         )
         model = result.scalar_one_or_none()
         return self._to_entity(model) if model else None
-    
+
     async def get_all(self, skip: int = 0, limit: int = 100) -> list[{{ entity_name }}]:
         result = await self._session.execute(
             select({{ entity_name }}Model).offset(skip).limit(limit)
         )
         return [self._to_entity(m) for m in result.scalars().all()]
-    
+
     async def update(self, entity: {{ entity_name }}) -> {{ entity_name }}:
         model = await self._session.get({{ entity_name }}Model, entity.id)
         if model:
@@ -229,7 +228,7 @@ class {{ entity_name }}Repository(I{{ entity_name }}Repository):
             await self._session.refresh(model)
             return self._to_entity(model)
         raise ValueError("Not found")
-    
+
     async def delete(self, id: int) -> bool:
         model = await self._session.get({{ entity_name }}Model, id)
         if model:
@@ -244,7 +243,7 @@ from ....domain.repositories.{{ entity_name_snake }}_repository import I{{ entit
 class Create{{ entity_name }}UseCase:
     def __init__(self, repository: I{{ entity_name }}Repository):
         self._repository = repository
-    
+
     async def execute(self, {% for field in fields %}{{ field.name }}: {{ field.type }}, {% endfor %}) -> {{ entity_name }}:
         entity = {{ entity_name }}({% for field in fields %}{{ field.name }}={{ field.name }}, {% endfor %})
         return await self._repository.create(entity)
@@ -290,7 +289,7 @@ class {{ entity_name }}Update(BaseModel):
 class {{ entity_name }}Response({{ entity_name }}Base):
     id: int
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 ''',
@@ -351,19 +350,19 @@ class JWTHandler:
         self.secret = settings.SECRET_KEY
         self.algorithm = settings.ALGORITHM
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    
+
     def create_token(self, data: dict) -> str:
         to_encode = data.copy()
         expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
         return jwt.encode(to_encode, self.secret, algorithm=self.algorithm)
-    
+
     def verify_token(self, token: str) -> dict:
         return jwt.decode(token, self.secret, algorithms=[self.algorithm])
-    
+
     def hash_password(self, password: str) -> str:
         return self.pwd_context.hash(password)
-    
+
     def verify_password(self, plain: str, hashed: str) -> bool:
         return self.pwd_context.verify(plain, hashed)
 ''',

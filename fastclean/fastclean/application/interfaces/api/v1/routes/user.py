@@ -27,7 +27,7 @@ async def create_user(
             created_at=user.created_at,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/{user_id}", response_model=UserResponse)
@@ -44,7 +44,7 @@ async def get_user(
             created_at=user.created_at,
         )
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 @router.get("/", response_model=list[UserResponse])

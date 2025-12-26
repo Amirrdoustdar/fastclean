@@ -28,14 +28,14 @@ class BaseGenerator(ABC):
 
         return files
 
-    def prepare(self, output_path: Path, context: dict[str, Any]) -> None:
+    def prepare(self, output_path: Path, context: dict[str, Any]) -> None:  # noqa: B027
         """Prepare for generation (can be overridden)"""
 
     @abstractmethod
     def generate_files(self, output_path: Path, context: dict[str, Any]) -> list[Path]:
         """Generate files (must be implemented)"""
 
-    def post_process(self, output_path: Path, context: dict[str, Any]) -> None:
+    def post_process(self, output_path: Path, context: dict[str, Any]) -> None:  # noqa: B027
         """Post-process after generation (can be overridden)"""
 
     def _render_template(
