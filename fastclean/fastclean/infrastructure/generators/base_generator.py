@@ -23,20 +23,21 @@ class BaseGenerator(ABC):
         return files
 
     def prepare(self, output_path: Path, context: dict[str, Any]) -> None:
-        """Prepare for generation (can be overridden)"""
-        pass
+        """Optional hook before generation."""
+        return None
 
     @abstractmethod
     def generate_files(self, output_path: Path, context: dict[str, Any]) -> list[Path]:
-        """Generate files (must be implemented)"""
+        """Generate files (must be implemented by subclasses)."""
+        ...
 
     def post_process(self, output_path: Path, context: dict[str, Any]) -> None:
-        """Post-process after generation (can be overridden)"""
-        pass
+        """Optional hook after generation."""
+        return None
 
     def _render_template(
         self, template_name: str, category: str, context: dict[str, Any]
     ) -> str:
-        """Render a template"""
+        """Render a template."""
         template = self._template_engine.load_template(template_name, category)
         return self._template_engine.render(template, context)

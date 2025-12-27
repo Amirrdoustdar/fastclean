@@ -3,32 +3,13 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fastapi-clean-cli"
-version = "0.1.4"
-description = "The Ultimate CLI tool for scaffolding FastAPI projects with Clean Architecture"
+name = "fastclean"
+version = "0.1.5"
+description = "FastAPI Clean Architecture CLI"
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.9"
-keywords = ["fastapi", "clean-architecture", "cli", "generator", "scaffolding"]
-authors = [
-    {name = "Amir Doustdar", email = "amirrdoustdar1@gmail.com"}
-]
-maintainers = [
-    {name = "Amir Doustdar", email = "amirrdoustdar1@gmail.com"}
-]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Framework :: FastAPI",
-    "Topic :: Software Development :: Code Generators",
-]
-
+requires-python = ">=3.10"
+authors = [{ name = "Amir Doustdar", email = "amir@example.com" }]
 dependencies = [
     "jinja2>=3.1.2",
     "rich>=13.7.0",
@@ -38,25 +19,16 @@ dependencies = [
     "typing-extensions>=4.8.0",
 ]
 
-[project.urls]
-Homepage = "https://github.com/Amirrdoustdar/fastclean"
-Documentation = "https://github.com/Amirrdoustdar/fastclean#readme"
-Repository = "https://github.com/Amirrdoustdar/fastclean"
-"Bug Tracker" = "https://github.com/Amirrdoustdar/fastclean/issues"
-
-[project.scripts]
-fastapi-clean = "fastclean.cli.main:main"
-fastclean = "fastclean.cli.main:main"
-
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
-    "pytest-cov>=4.1.0",
     "ruff>=0.1.9",
-    "black>=23.12.0",
-    "isort>=5.13.0",
+    "black>=23.0.0",
 ]
+
+[project.scripts]
+fastclean = "fastclean.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -66,20 +38,13 @@ include = ["fastclean*"]
 fastclean = ["templates/**/*"]
 
 [tool.ruff]
+target-version = "py310"
 line-length = 88
-target-version = "py39"
-select = ["E", "W", "F", "I", "C", "B"]
-ignore = ["E501", "B008", "C901"]
 
-[tool.black]
-line-length = 88
-target-version = ["py39", "py310", "py311", "py312"]
-
-[tool.isort]
-profile = "black"
-line_length = 88
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B"]
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-addopts = "--strict-markers --cov=fastclean"
