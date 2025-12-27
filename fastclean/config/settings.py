@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 from pydantic_settings import BaseSettings
 
@@ -8,7 +7,7 @@ class CLISettings(BaseSettings):
     """CLI application settings"""
 
     # Paths
-    templates_dir: Optional[Path] = None
+    templates_dir: Path | None = None
     output_dir: Path = Path.cwd()
 
     # Behavior
