@@ -20,11 +20,13 @@ class TestCreateProductUseCase:
         )
 
         # Act
-        result = self.usecase.execute({
-            "name": str(),
-            "price": float(),
-            "quantity": int(),
-        })
+        result = self.usecase.execute(
+            {
+                "name": str(),
+                "price": float(),
+                "quantity": int(),
+            }
+        )
 
         # Assert
         assert result is not None

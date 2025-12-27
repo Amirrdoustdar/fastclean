@@ -5,7 +5,7 @@ from src.main import app
 
 @pytest.mark.asyncio
 class TestProductAPI:
-    
+
     async def test_create_product(self, client: AsyncClient):
         response = await client.post(
             "/api/v1/products",
@@ -13,7 +13,7 @@ class TestProductAPI:
                 "name": str(),
                 "price": float(),
                 "quantity": int(),
-            }
+            },
         )
         assert response.status_code == 201
         data = response.json()
@@ -27,7 +27,7 @@ class TestProductAPI:
                 "name": str(),
                 "price": float(),
                 "quantity": int(),
-            }
+            },
         )
         created_id = create_response.json()["id"]
 
@@ -52,7 +52,7 @@ class TestProductAPI:
                 "name": str(),
                 "price": float(),
                 "quantity": int(),
-            }
+            },
         )
         created_id = create_response.json()["id"]
 
